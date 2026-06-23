@@ -1,0 +1,2 @@
+marker_id	fwd_primer	rev_primer	min_bp	max_bp
+AML	ATCAACTTTCGATGGTAGGATAGA	GAACCCAAACACTTTGGTTTCC	100	1000

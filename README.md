@@ -194,16 +194,16 @@ and rename and concat in bash
 ```
 for i in {01..57}; do cp /mnt/data/max/20260613_AMF/ngspeciesid/${i}/all_consensus.fasta ${i}_consensus.fasta; done
 
-for file in $(ls *_consensus.fasta | sort -V) do
+for file in $(ls *_consensus.fasta | sort -V); do
      sample=$(basename "$file" _consensus.fasta)
      cluster=1
-      while read line do
-         if [[ "$line" =~ ^">" ]]
-          then
+      while read line; do
+         if [[ "$line" =~ ^">" ]]; then
              echo ">sample${sample}_cluster${cluster}" >> all_samples.fasta
              ((cluster++))
          else
              echo "$line" >> all_samples.fasta
          fi
      done
+done
 ```

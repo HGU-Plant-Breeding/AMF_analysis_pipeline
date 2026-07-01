@@ -172,10 +172,10 @@ And this is how it works with NGSpeciesID input
 
 ```
 python scripts/blast_to_count_table.py -d amf \
--b blast_otu/${i}.blast.out \
+-b blast/01.blast.out \
 -t database/amf_taxonomy.tsv \
--c vsearch/${i}_otu_map_sum.txt \
--o count_tables/${i}.cluster_count_taxonomy.tsv
+--ngspeciesid \
+-o test
 ```
 
 ## 4. Combine per-samples tables into one count-matrix, merging fields on blast hits
@@ -195,15 +195,16 @@ and rename and concat in bash
 for i in {01..57}; do cp /mnt/data/max/20260613_AMF/ngspeciesid/${i}/all_consensus.fasta ${i}_consensus.fasta; done
 
 for file in $(ls *_consensus.fasta | sort -V); do
-     sample=$(basename "$file" _consensus.fasta)
-     cluster=1
-      while read line; do
-         if [[ "$line" =~ ^">" ]]; then
-             echo ">sample${sample}_cluster${cluster}" >> all_samples.fasta
-             ((cluster++))
-         else
-             echo "$line" >> all_samples.fasta
-         fi
-     done
+    sample=$(basename "$file" _consensus.fasta)
+    cluster=1
+
+    while read -r line; do
+        if [[ "$line" =~ ^\> ]]; then
+            echo ">sample${sample}_cluster${cluster}" >> all_samples.fasta
+            ((cluster++))
+        else
+            echo "$line" >> all_samples.fasta
+        fi
+    done < "$file"
 done
 ```
